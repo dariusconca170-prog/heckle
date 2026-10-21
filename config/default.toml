@@ -8,9 +8,10 @@ port = 8000
 # Where the media picker looks for playable files.
 media_dir = "data/media"
 
-# File playback reads ahead of the playhead. M0.5 replaces this from the
-# measured model latency; 5.5 s is the 9B starting point from PLAN.md §7.7.
-lookahead_s = 5.5
+# File playback reads ahead of the playhead. The selected profile
+# (data/model_profile.json) owns the real value; 5.8 s is the 4B default from
+# the short 4B smoke (vision ~1.5 s + batch ~2.3 s + 2 s).
+lookahead_s = 5.8
 
 # A browser timeupdate more than this far from the projected clock is a seek.
 seek_threshold_s = 1.25

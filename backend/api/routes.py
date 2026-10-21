@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import csv
 import io
 import json
@@ -9,7 +10,7 @@ import time
 from collections.abc import Iterator
 from pathlib import Path
 
-from fastapi import APIRouter, HTTPException, Request, Response, status
+from fastapi import APIRouter, HTTPException, Query, Request, Response, status
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 
@@ -24,6 +25,10 @@ from ..state import AppState
 
 router = APIRouter(prefix="/api")
 BOOT_TIME = time.monotonic()
+
+# Videos are streamed straight to disk; this only stops a runaway upload from
+# filling the drive. Ten minutes of 1080p is well under 2 GB.
+MAX_UPLOAD_BYTES = 8 * 1024**3
 
 
 class StartSessionRequest(BaseModel):
@@ -46,6 +51,67 @@ def list_media(request: Request) -> dict[str, object]:
     state = _state(request)
     items = state.list_media()
     return {"items": [item.as_dict() for item in items], "media_dir": str(state.library.root)}
+
+
+@router.post("/media/upload", status_code=status.HTTP_201_CREATED)
+async def upload_media(
+    request: Request,
+    name: str = Query(min_length=1, max_length=255),
+) -> dict[str, object]:
+    """Copy a browser-selected video into the media library.
+
+    The body is the raw file (no multipart dependency); ``name`` is the
+    original filename. Directories are stripped, the extension must be one the
+    library serves, and an existing file is never overwritten.
+    """
+    state = _state(request)
+    library = state.library
+    filename = Path(name.replace("\\", "/")).name.strip()
+    if not filename or filename.startswith(".") or "\x00" in filename:
+        raise HTTPException(status_code=422, detail="invalid file name")
+    suffix = Path(filename).suffix.lower()
+    if suffix not in library.extensions:
+        raise HTTPException(
+            status_code=422,
+            detail=(
+                f"unsupported video type: {suffix or 'no extension'}; "
+                f"use one of {', '.join(library.extensions)}"
+            ),
+        )
+
+    library.root.mkdir(parents=True, exist_ok=True)
+    target = _unique_upload_path(library.root, filename)
+    written = 0
+    try:
+        with target.open("wb") as handle:
+            async for chunk in request.stream():
+                if not chunk:
+                    continue
+                written += len(chunk)
+                if written > MAX_UPLOAD_BYTES:
+                    raise HTTPException(status_code=413, detail="file is larger than the 8 GB limit")
+                await asyncio.to_thread(handle.write, chunk)
+        if written == 0:
+            raise HTTPException(status_code=422, detail="empty file")
+    except BaseException:
+        target.unlink(missing_ok=True)
+        raise
+
+    item = library.resolve(target.relative_to(library.root).as_posix())
+    return {"item": item.as_dict(), "uploaded": written}
+
+
+def _unique_upload_path(root: Path, filename: str) -> Path:
+    """Never overwrite a library file; add `` (2)``, `` (3)`` ... instead."""
+    target = root / filename
+    if not target.exists():
+        return target
+    stem, suffix = Path(filename).stem, Path(filename).suffix
+    for index in range(2, 1000):
+        candidate = root / f"{stem} ({index}){suffix}"
+        if not candidate.exists():
+            return candidate
+    raise HTTPException(status_code=409, detail="too many copies of that file name")
 
 
 @router.post("/session", status_code=status.HTTP_201_CREATED)

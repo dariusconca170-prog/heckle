@@ -46,9 +46,9 @@ class Settings(BaseSettings):
     media_dir: Path = DEFAULT_MEDIA_DIR
     frontend_dist: Path = DEFAULT_FRONTEND_DIST
 
-    # File playback: the read head is t_play + lookahead_s. M0.5 replaces the
-    # value from measured latency; see data/bakeoff.md.
-    lookahead_s: float = 5.5
+    # File playback: the read head is t_play + lookahead_s. The selected
+    # profile owns the real value; 5.8 s is the default 4B profile.
+    lookahead_s: float = 5.8
     seek_threshold_s: float = 1.25
     clock_broadcast_hz: float = 4.0
 

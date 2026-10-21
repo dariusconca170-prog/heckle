@@ -68,6 +68,10 @@ const setupScreen = byId<HTMLElement>("setup");
 const studioScreen = byId<HTMLElement>("studio");
 const mediaList = byId<HTMLDivElement>("media-list");
 const refreshButton = byId<HTMLButtonElement>("refresh-media");
+const addMediaButton = byId<HTMLButtonElement>("add-media");
+const uploadInput = byId<HTMLInputElement>("media-upload");
+const mediaStatus = byId<HTMLElement>("media-status");
+const setupCard = document.querySelector<HTMLElement>(".setup-card");
 const startButton = byId<HTMLButtonElement>("start-stream");
 const endButton = byId<HTMLButtonElement>("end-stream");
 const titleInput = byId<HTMLInputElement>("stream-title");
@@ -187,6 +191,11 @@ function setNote(text: string, holdMs = 3200): void {
 function showSetupError(message: string | null): void {
   setupError.hidden = message === null;
   setupError.textContent = message ?? "";
+}
+
+function setMediaStatus(message: string | null): void {
+  mediaStatus.hidden = message === null;
+  mediaStatus.textContent = message ?? "";
 }
 
 function formatBytes(bytes: number): string {
@@ -1128,7 +1137,7 @@ function renderMedia(): void {
     const empty = document.createElement("div");
     empty.className = "media-empty";
     empty.innerHTML =
-      "<strong>No videos found.</strong><span>Drop an mp4/mkv/webm into <code>data/media</code> and refresh.</span>";
+      "<strong>No videos yet.</strong><span>Press <b>add video</b> above, drop a file here, or put one in <code>data/media</code> and refresh.</span>";
     mediaList.append(empty);
     startButton.disabled = true;
     return;
@@ -1189,6 +1198,74 @@ async function loadMedia(): Promise<void> {
   }
 }
 
+function setUpDragActive(active: boolean): void {
+  setupCard?.classList.toggle("drag-over", active);
+}
+
+function bindMediaDrop(): void {
+  if (!setupCard) return;
+  setupCard.addEventListener("dragover", (event) => {
+    if (!event.dataTransfer) return;
+    if (!Array.from(event.dataTransfer.types).includes("Files")) return;
+    event.preventDefault();
+    event.dataTransfer.dropEffect = "copy";
+    setUpDragActive(true);
+  });
+  setupCard.addEventListener("dragleave", (event) => {
+    const next = event.relatedTarget;
+    if (next instanceof Node && setupCard.contains(next)) return;
+    setUpDragActive(false);
+  });
+  setupCard.addEventListener("drop", (event) => {
+    const files = event.dataTransfer?.files;
+    if (!files || files.length === 0) return;
+    event.preventDefault();
+    setUpDragActive(false);
+    void uploadMedia(files);
+  });
+}
+
+async function uploadMedia(files: FileList): Promise<void> {
+  const list = Array.from(files);
+  if (list.length === 0) return;
+  addMediaButton.disabled = true;
+  setUpDragActive(false);
+  setMediaStatus(null);
+  let lastId: string | null = null;
+  try {
+    for (const [index, file] of list.entries()) {
+      addMediaButton.textContent = list.length > 1 ? `uploading ${index + 1}/${list.length}` : "uploading…";
+      const response = await fetch(`/api/media/upload?name=${encodeURIComponent(file.name)}`, {
+        method: "POST",
+        headers: { "Content-Type": file.type || "application/octet-stream" },
+        body: file,
+      });
+      const body = (await response.json().catch(() => ({}))) as {
+        item?: MediaItem;
+        detail?: string;
+      };
+      if (!response.ok) {
+        throw new Error(body.detail ?? `upload failed (${response.status})`);
+      }
+      lastId = body.item?.id ?? null;
+    }
+    await loadMedia();
+    const uploaded = mediaItems.find((item) => item.id === lastId);
+    if (uploaded) selectMedia(uploaded);
+    setMediaStatus(
+      uploaded
+        ? `added ${uploaded.name} — press Start stream`
+        : `added ${list.length} video${list.length === 1 ? "" : "s"}`,
+    );
+  } catch (error) {
+    showSetupError(error instanceof Error ? error.message : "upload failed");
+  } finally {
+    addMediaButton.disabled = false;
+    addMediaButton.textContent = "add video";
+    uploadInput.value = "";
+  }
+}
+
 async function startStream(): Promise<void> {
   if (!selectedId) {
     showSetupError("pick a video first");
@@ -1231,6 +1308,11 @@ async function endStream(): Promise<void> {
 
 async function bootstrap(): Promise<void> {
   refreshButton.addEventListener("click", () => void loadMedia());
+  addMediaButton.addEventListener("click", () => uploadInput.click());
+  uploadInput.addEventListener("change", () => {
+    if (uploadInput.files) void uploadMedia(uploadInput.files);
+  });
+  bindMediaDrop();
   startButton.addEventListener("click", () => void startStream());
   endButton.addEventListener("click", () => void endStream());
   generateChatButton.addEventListener("click", () => void generateChatNow());

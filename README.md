@@ -7,7 +7,8 @@ full specification is [`PLAN.md`](./PLAN.md); the build rules are in
 
 **Current status: M0–M10 complete.** M11 (packaging wizard) is the remaining
 milestone. M0.5 was explicitly waived by the user and `data/bakeoff.md` names the
-4B provisionally (not a measured winner). M1 perception, M2 chatter and M3
+**4B as the default model** (`Qwen3.5-4B-Unredacted-MAX`, profile `config/models/4b.toml`,
+written to `data/model_profile.json`) — provisionally, not as a measured winner. M1 perception, M2 chatter and M3
 dynamics run against that profile; M4 adds SQLite history and persona memory;
 M5–M7 add threads, polls/stream events and clips; M8–M9 add microphone and
 screen capture; M10 adds the OBS overlay, emotes, settings/presets, export and
@@ -100,8 +101,17 @@ the VRAM/tok-s HUD. The M2/M3 human gates are still open; see
 a 30-second demo clip at `data/media/sample.mp4`. `run` opens
 <http://127.0.0.1:8000/>; pick the clip and press **Start stream**.
 
-Put your own `mp4`/`mkv`/`webm`/`mov` files in `data/media/` and press
-**refresh** on the setup screen.
+**Your own video:** press **add video** on the setup screen and pick any
+`mp4`/`mkv`/`webm`/`mov`/`m4v`/`avi`/`ts` file. It streams straight into
+`data/media/` (8 GB cap, existing names never overwritten) and is selected for
+you. Dropping files into `data/media/` and pressing **refresh** still works.
+
+The same endpoint is available by hand:
+
+```bash
+curl -X POST --data-binary @my-clip.mp4 \
+  "http://127.0.0.1:8000/api/media/upload?name=my-clip.mp4"
+```
 
 Useful development commands:
 

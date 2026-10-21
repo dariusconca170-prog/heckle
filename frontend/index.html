@@ -33,11 +33,20 @@
             <div class="field">
               <div class="field-head">
                 <label>Media library</label>
-                <button id="refresh-media" class="text-button" type="button">refresh</button>
+                <div class="field-head-actions">
+                  <button id="add-media" class="text-button" type="button">add video</button>
+                  <button id="refresh-media" class="text-button" type="button">refresh</button>
+                </div>
+                <input id="media-upload" type="file" accept="video/*,.mkv,.ts" multiple hidden />
               </div>
               <div id="media-list" class="media-list" aria-live="polite">
                 <p class="muted">Scanning media library…</p>
               </div>
+              <p id="media-status" class="media-status" hidden></p>
+              <p class="media-hint">
+                mp4 · mkv · webm · mov · m4v · avi · ts — press <strong>add video</strong> or drop a
+                file here
+              </p>
             </div>
 
             <div class="field-grid">

@@ -18,6 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from backend.config import Settings  # noqa: E402
 from backend.llm.profile import ModelProfile, load_profile  # noqa: E402
 from backend.llm.server_manager import ServerManager  # noqa: E402
 
@@ -54,8 +55,11 @@ def main() -> int:
     )
     parser.add_argument("--llama-server")
     args = parser.parse_args()
+    # ``--llama-server`` wins; otherwise honor TWITCHSIM_LLAMA_SERVER from the
+    # environment or .env, which is how every other setting is overridden.
+    executable = args.llama_server or Settings().llama_server
     try:
-        return asyncio.run(run(args.profile, args.llama_server))
+        return asyncio.run(run(args.profile, executable))
     except KeyboardInterrupt:
         return 130
 

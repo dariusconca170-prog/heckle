@@ -59,6 +59,51 @@ def test_media_library_and_session(client: TestClient) -> None:
     assert client.get("/api/session").status_code == 404
 
 
+def test_upload_media(client: TestClient) -> None:
+    response = client.post(
+        "/api/media/upload",
+        params={"name": "my clip.mp4"},
+        content=b"video-bytes",
+    )
+    assert response.status_code == 201, response.text
+    body = response.json()
+    assert body["item"]["id"] == "my clip.mp4"
+    assert body["uploaded"] == len(b"video-bytes")
+    ids = {item["id"] for item in client.get("/api/media").json()["items"]}
+    assert "my clip.mp4" in ids
+
+
+def test_upload_never_overwrites(client: TestClient) -> None:
+    first = client.post("/api/media/upload", params={"name": "clip.mp4"}, content=b"one")
+    second = client.post("/api/media/upload", params={"name": "clip.mp4"}, content=b"two")
+    assert first.status_code == 201 and second.status_code == 201
+    assert first.json()["item"]["id"] == "clip.mp4"
+    assert second.json()["item"]["id"] == "clip (2).mp4"
+
+
+def test_upload_strips_directories(client: TestClient) -> None:
+    response = client.post(
+        "/api/media/upload",
+        params={"name": "../../etc/passwd.mp4"},
+        content=b"abc",
+    )
+    assert response.status_code == 201, response.text
+    assert response.json()["item"]["id"] == "passwd.mp4"
+
+
+def test_upload_rejects_bad_input(client: TestClient) -> None:
+    assert (
+        client.post("/api/media/upload", params={"name": "notes.txt"}, content=b"x").status_code
+        == 422
+    )
+    assert client.post("/api/media/upload", params={"name": ".hidden.mp4"}, content=b"x").status_code == 422
+    assert client.post("/api/media/upload", params={"name": "empty.mp4"}, content=b"").status_code == 422
+    assert (
+        client.post("/api/media/upload", params={"name": "noext"}, content=b"x").status_code
+        == 422
+    )
+
+
 def test_media_token_required(client: TestClient) -> None:
     assert client.get("/api/media/not-a-token").status_code == 404
 
