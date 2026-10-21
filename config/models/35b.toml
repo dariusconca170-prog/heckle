@@ -1,0 +1,23 @@
+# Challenger. Adopt only if the 30-minute full-load gate in PLAN.md §7.4 step 7
+# passes AND it wins the blind chat-voice score. Ties go to the 9B.
+name = "35b"
+model_id = "HauhauCS/Qwen3.6-35B-A3B-Uncensored-HauhauCS-Aggressive"
+model = "data/models/Qwen3.6-35B-A3B-Uncensored-HauhauCS-Aggressive-Q4_K_P.gguf"
+mmproj = "data/models/mmproj-Qwen3.6-35B-A3B-Uncensored-HauhauCS-Aggressive-f16.gguf"
+alias = "twitch-sim-35b"
+
+ctx = 4096
+n_gpu_layers = 99
+n_cpu_moe = 23
+threads = 8
+batch = 2048
+ubatch = 2048
+cache_type_k = "q8_0"
+cache_type_v = "q8_0"
+flash_attn = true
+jinja = true
+disable_thinking = true
+
+host = "127.0.0.1"
+port = 8080
+lookahead_s = 9.0

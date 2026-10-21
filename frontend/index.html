@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <title>Twitch Simulator</title>
+  </head>
+  <body>
+    <div id="app">
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>twitch<span class="brand-dim">sim</span></span>
+        </div>
+        <div class="topbar-right">
+          <button id="open-settings" class="text-button" type="button">settings</button>
+          <span id="ws-status" class="status-pill status-offline">offline</span>
+          <span class="milestone-pill">M10</span>
+        </div>
+      </header>
+
+      <main>
+        <section id="setup" class="screen setup-screen" aria-labelledby="setup-title">
+          <div class="setup-card">
+            <p class="eyebrow">local stream simulator</p>
+            <h1 id="setup-title">Load a video.<br />Let chat react.</h1>
+            <p class="lede">
+              Pick a file from <code>data/media</code>. The player is the clock; the
+              backend reads ahead so reactions can land at human speed.
+            </p>
+
+            <div class="field">
+              <div class="field-head">
+                <label>Media library</label>
+                <button id="refresh-media" class="text-button" type="button">refresh</button>
+              </div>
+              <div id="media-list" class="media-list" aria-live="polite">
+                <p class="muted">Scanning media library…</p>
+              </div>
+            </div>
+
+            <div class="field-grid">
+              <div class="field">
+                <label for="stream-title">Stream title</label>
+                <input id="stream-title" type="text" maxlength="160" placeholder="late night run" />
+              </div>
+              <div class="field">
+                <label for="stream-category">Category</label>
+                <input id="stream-category" type="text" maxlength="80" placeholder="just chatting" />
+              </div>
+            </div>
+
+            <div class="field-grid">
+              <div class="field">
+                <label for="viewer-count">Viewers</label>
+                <input id="viewer-count" type="number" min="0" max="1000000" step="50" value="1200" />
+              </div>
+              <div class="field field-action">
+                <button id="start-stream" class="primary-button" type="button" disabled>
+                  Start stream
+                </button>
+              </div>
+            </div>
+
+            <p id="setup-error" class="error" role="alert" hidden></p>
+          </div>
+        </section>
+
+        <section id="studio" class="screen studio-screen" hidden aria-label="Studio">
+          <div class="studio-grid">
+            <div class="stage">
+              <div class="player-frame">
+                <video id="player" playsinline controls preload="metadata"></video>
+                <div id="player-placeholder" class="player-placeholder">
+                  <p>Select a video to begin</p>
+                </div>
+              </div>
+
+              <div class="stream-meta">
+                <div class="live-dot" aria-hidden="true"></div>
+                <div class="stream-meta-text">
+                  <strong id="studio-title">Stream</strong>
+                  <span id="studio-category">no category</span>
+                </div>
+                <span id="studio-viewers" class="viewer-count">1,200 viewers</span>
+                <button id="end-stream" class="text-button danger" type="button">end stream</button>
+              </div>
+
+              <div class="system-strip" aria-label="System metrics">
+                <span>viewers <b id="hud-viewers">—</b></span>
+                <span>VRAM <b id="hud-vram">—</b></span>
+                <span>tok/s <b id="hud-toks">—</b></span>
+                <span>RAM <b id="hud-ram">—</b></span>
+                <span>chat rate <b id="hud-rate">—</b></span>
+                <span>replies <b id="hud-replies">—</b></span>
+              </div>
+
+              <section class="feature-panel poll-panel" aria-label="Poll">
+                <div class="feature-head">
+                  <h2>Poll</h2>
+                  <span id="poll-status" class="feature-status">no poll</span>
+                </div>
+                <div id="poll-active" class="poll-active" hidden>
+                  <div class="poll-topline">
+                    <strong id="poll-question">—</strong>
+                    <span id="poll-timer" class="poll-timer">0s</span>
+                  </div>
+                  <div id="poll-options" class="poll-options"></div>
+                  <div class="poll-foot">
+                    <span id="poll-total" class="muted">0 votes</span>
+                    <button id="poll-close" class="text-button danger" type="button">close poll</button>
+                  </div>
+                </div>
+                <details id="poll-create" class="feature-form">
+                  <summary>ask chat a question</summary>
+                  <label for="poll-question-input">question</label>
+                  <input id="poll-question-input" type="text" maxlength="140" placeholder="what should I do next?" />
+                  <label for="poll-options-input">options · one per line</label>
+                  <textarea id="poll-options-input" rows="3" placeholder="push&#10;hold&#10;rotate"></textarea>
+                  <div class="field-grid">
+                    <div class="field">
+                      <label for="poll-duration">seconds</label>
+                      <input id="poll-duration" type="number" min="5" max="3600" step="5" value="60" />
+                    </div>
+                    <div class="field field-action">
+                      <button id="poll-create-button" class="primary-button" type="button">open poll</button>
+                    </div>
+                  </div>
+                </details>
+                <p id="poll-note" class="feature-note muted">polls pause with the video</p>
+              </section>
+
+              <section class="feature-panel clip-panel" aria-label="Clips">
+                <div class="feature-head">
+                  <h2>Clips</h2>
+                  <button id="clip-now" class="text-button" type="button">clip now</button>
+                </div>
+                <div id="clip-list" class="clip-list">
+                  <p class="muted">chat spikes become clips with 15 s of preroll.</p>
+                </div>
+                <p id="clip-note" class="feature-note muted">z-score against a 5 minute baseline</p>
+              </section>
+
+              <section class="debug-panel" aria-label="Playback clock debug">
+                <div class="debug-head">
+                  <h2>Playback clock</h2>
+                  <span id="clock-note" class="clock-note">waiting for first update</span>
+                </div>
+                <dl class="debug-grid">
+                  <div><dt>t_play</dt><dd id="dbg-tplay">0.00</dd></div>
+                  <div><dt>t_read</dt><dd id="dbg-tread">0.00</dd></div>
+                  <div><dt>drift</dt><dd id="dbg-drift">—</dd></div>
+                  <div><dt>generation</dt><dd id="dbg-generation">0</dd></div>
+                  <div><dt>look-ahead</dt><dd id="dbg-lookahead">5.5s</dd></div>
+                  <div><dt>state</dt><dd id="dbg-playing">paused</dd></div>
+                  <div><dt>video</dt><dd id="dbg-video">—</dd></div>
+                  <div><dt>updates</dt><dd id="dbg-updates">0</dd></div>
+                </dl>
+                <p class="debug-foot">
+                  Two clocks: <code>t_play</code> is what you see;
+                  <code>t_read = t_play + look-ahead</code> is what perception reads.
+                  A seek bumps <code>generation</code> so queued work is discarded,
+                  never delivered late.
+                </p>
+              </section>
+
+              <section class="debug-panel scene-panel" aria-label="Perception debug">
+                <div class="debug-head">
+                  <h2>Perception</h2>
+                  <span id="scene-status" class="clock-note">waiting for playback</span>
+                </div>
+                <div class="scene-current">
+                  <p id="scene-summary" class="scene-summary">No frame observed yet.</p>
+                  <dl class="debug-grid scene-grid">
+                    <div><dt>action</dt><dd id="scene-action">—</dd></div>
+                    <div><dt>mood</dt><dd id="scene-mood">—</dd></div>
+                    <div><dt>surprise</dt><dd id="scene-surprise">—</dd></div>
+                    <div><dt>confidence</dt><dd id="scene-confidence">—</dd></div>
+                    <div><dt>scene t</dt><dd id="scene-ts">—</dd></div>
+                    <div><dt>vision latency</dt><dd id="scene-latency">—</dd></div>
+                    <div><dt>samples</dt><dd id="scene-samples">0</dd></div>
+                    <div><dt>service</dt><dd id="scene-service">—</dd></div>
+                  </dl>
+                  <p id="scene-text" class="scene-text" hidden></p>
+                </div>
+                <div class="scene-history">
+                  <div class="scene-column">
+                    <h3>timeline · 90 s</h3>
+                    <ol id="scene-timeline" class="scene-list">
+                      <li class="scene-empty">waiting for the first observation</li>
+                    </ol>
+                  </div>
+                  <div class="scene-column">
+                    <h3>derived events</h3>
+                    <ul id="scene-events" class="scene-events">
+                      <li class="scene-empty">none yet</li>
+                    </ul>
+                  </div>
+                </div>
+              </section>
+            </div>
+
+            <aside class="chat-pane" aria-label="Chat">
+              <div class="chat-head">
+                <div>
+                  <h2>Stream chat</h2>
+                  <span id="chat-subtitle" class="muted">watching the stream</span>
+                </div>
+                <span id="chat-status" class="chat-badge">connecting</span>
+              </div>
+              <div class="dynamics-strip" aria-label="Chat dynamics status">
+                <div class="dynamics-line">
+                  <span id="dynamics-status" class="dynamics-mode">M3 · idle</span>
+                  <span id="dynamics-rate" class="dynamics-rate">0.00 msg/s</span>
+                </div>
+                <div id="buffer-meter" class="buffer-meter" role="meter" aria-label="Chat buffer" aria-valuemin="0" aria-valuemax="20" aria-valuenow="0">
+                  <span id="buffer-fill" class="buffer-fill"></span>
+                </div>
+                <div class="dynamics-meta">
+                  <span>buffer <b id="dbg-buffer">0 / 20</b></span>
+                  <span>intensity <b id="dbg-intensity">0.30</b></span>
+                  <span>released <b id="dbg-released">0</b></span>
+                  <span>copy <b id="dbg-copies">0</b></span>
+                </div>
+              </div>
+              <div id="chat-log" class="chat-log" aria-live="polite">
+                <div class="system-line" id="chat-intro">
+                  <span class="system-accent">M10 live</span>
+                  The Hawkes scheduler decides when chat appears. Messages are
+                  pre-generated ahead of the playhead, threads and arguments form
+                  after release, and silence is allowed.
+                </div>
+              </div>
+              <div class="chat-foot">
+                <span id="chat-note" class="chat-note muted">
+                  waiting for playback
+                </span>
+                <details class="chat-debug">
+                  <summary>debug · preview a batch</summary>
+                  <button id="generate-chat" class="generate-button" type="button">
+                    Preview 10 messages (bypasses timing)
+                  </button>
+                </details>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section id="settings" class="screen settings-screen" hidden aria-labelledby="settings-title">
+          <div class="settings-card">
+            <div class="settings-head">
+              <div>
+                <p class="eyebrow">runtime settings</p>
+                <h1 id="settings-title">Tune the room.</h1>
+              </div>
+              <button id="close-settings" class="text-button" type="button">back to studio</button>
+            </div>
+
+            <div class="preset-row" id="preset-row"></div>
+
+            <div class="field-grid">
+              <div class="field">
+                <label for="setting-mode">Content mode</label>
+                <select id="setting-mode">
+                  <option value="unhinged">unhinged</option>
+                  <option value="edgy">edgy</option>
+                  <option value="neutral">neutral</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="setting-intensity">Intensity <span id="setting-intensity-value">1.0</span>×</label>
+                <input id="setting-intensity" type="range" min="0.2" max="3" step="0.1" value="1" />
+              </div>
+            </div>
+
+            <div class="field-grid">
+              <div class="field">
+                <label for="setting-buffer">Chat buffer target</label>
+                <input id="setting-buffer" type="number" min="4" max="60" step="1" value="20" />
+              </div>
+              <div class="field">
+                <label for="setting-lookahead">Look-ahead (next stream)</label>
+                <input id="setting-lookahead" type="number" min="0" max="30" step="0.5" value="5.5" />
+              </div>
+            </div>
+
+            <div class="field-grid">
+              <div class="field">
+                <label for="setting-model">Model path</label>
+                <input id="setting-model" type="text" maxlength="500" placeholder="data/models/model.gguf" />
+              </div>
+              <div class="field">
+                <label for="setting-quant">Quant</label>
+                <input id="setting-quant" type="text" maxlength="24" value="Q4_K_M" />
+              </div>
+            </div>
+
+            <div class="toggle-row">
+              <label class="toggle"><input id="setting-tts" type="checkbox" /> <span>TTS (v3, stored only)</span></label>
+              <label class="toggle"><input id="setting-mic" type="checkbox" /> <span>Microphone capture</span></label>
+            </div>
+
+            <div class="settings-actions">
+              <button id="save-settings" class="primary-button" type="button">save settings</button>
+              <span id="settings-status" class="muted">loaded from data/settings.json</span>
+            </div>
+
+            <div class="settings-grid">
+              <section class="settings-block">
+                <h2>Overlay + emotes</h2>
+                <p>OBS Browser Source, 400×800, transparent background, no scrollbar.</p>
+                <a class="text-button" href="/overlay/chat" target="_blank" rel="noreferrer">open /overlay/chat</a>
+                <p class="muted">Local emotes: W, LUL, KEKW, Pog, monkaS, copium, ratio, &lt;3.</p>
+              </section>
+              <section class="settings-block">
+                <h2>Export</h2>
+                <p>Current stream chat log, from SQLite.</p>
+                <a class="text-button" href="/api/export/chat?format=json" download>chat JSON</a>
+                <a class="text-button" href="/api/export/chat?format=csv" download>chat CSV</a>
+              </section>
+              <section class="settings-block">
+                <h2>Mic + screen</h2>
+                <p id="device-status" class="muted">mic disabled · screen idle</p>
+                <div class="button-row">
+                  <button id="mic-start" class="text-button" type="button">start mic</button>
+                  <button id="mic-stop" class="text-button" type="button">stop mic</button>
+                </div>
+                <div class="button-row">
+                  <button id="screen-start" class="text-button" type="button">share screen</button>
+                  <button id="screen-toggle" class="text-button" type="button">pause capture</button>
+                  <button id="screen-stop" class="text-button" type="button">stop screen</button>
+                </div>
+              </section>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script type="module" src="/src/app.ts"></script>
+  </body>
+</html>

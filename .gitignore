@@ -1,0 +1,30 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+node_modules/
+frontend/dist/
+.env
+*.egg-info/
+
+# Runtime state that must never be published
+data/clips/
+data/settings.json
+data/latest_speech.json
+
+# Local runtime state
+data/models/
+data/media/*
+!data/media/.gitkeep
+data/logs/
+data/exports/
+data/*.db
+data/*.db-*
+data/bakeoff/*.json
+data/bakeoff/*.jsonl
+data/bakeoff/*.md
+data/model_profile.json
+
+# Keep the gate document and its instructions
+!data/bakeoff.md

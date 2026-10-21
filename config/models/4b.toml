@@ -1,0 +1,27 @@
+# 8 GB game-streaming profile. Selected by the user at M0.5 instead of the
+# 9B: on an RTX 3060 Ti the 9B cannot coexist with Geometry Dash + OBS +
+# browser + desktop. M0.5 measurements were waived for this choice; this is
+# provisional, not a measured bake-off winner. The 9B remains the quality
+# target for non-game video if a clean-GPU comparison is ever run.
+name = "4b"
+model_id = "prithivMLmods/Qwen3.5-4B-Unredacted-MAX"
+model = "data/models/Qwen3.5-4B-Unredacted-MAX.Q4_K_M.gguf"
+mmproj = "data/models/Qwen3.5-4B-Unredacted-MAX.mmproj-Q8_0.gguf"
+alias = "twitch-sim-4b"
+
+ctx = 4096
+n_gpu_layers = 99
+threads = 8
+batch = 2048
+ubatch = 2048
+cache_type_k = "q8_0"
+cache_type_v = "q8_0"
+flash_attn = true
+jinja = true
+disable_thinking = true
+
+host = "127.0.0.1"
+port = 8080
+# Provisional from a short 4B smoke (vision ~1.5 s + batch ~2.3 s + 2 s);
+# replace with the full M0.5 run if that gate is ever measured.
+lookahead_s = 5.8

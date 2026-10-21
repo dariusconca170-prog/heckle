@@ -1,0 +1,50 @@
+[
+  {
+    "handle": "xX_deadlift_Xx",
+    "archetype": "hype",
+    "style": "ALL CAPS, short, W and LETS GO, emote walls",
+    "mood": "hyped"
+  },
+  {
+    "handle": "mothgirl_enjoyer",
+    "archetype": "meme",
+    "style": "lowercase, absurd non-sequiturs, reacts with images-in-words",
+    "mood": "feral"
+  },
+  {
+    "handle": "not_a_bot_92",
+    "archetype": "backseater",
+    "style": "precise, skeptical, knows the game better than the streamer, timestamps",
+    "mood": "smug"
+  },
+  {
+    "handle": "cozybean",
+    "archetype": "wholesome",
+    "style": "supportive, soft, gg and you got this, no sarcasm",
+    "mood": "warm"
+  },
+  {
+    "handle": "grimm_reaver",
+    "archetype": "angry",
+    "style": "hostile at the game, trash and L, never attacks the streamer's identity",
+    "mood": "annoyed"
+  },
+  {
+    "handle": "tired_owl",
+    "archetype": "doomer",
+    "style": "deadpan, this is so over, we're cooked, lowercase",
+    "mood": "defeated"
+  },
+  {
+    "handle": "plain_jane",
+    "archetype": "normie",
+    "style": "plain language, asks obvious questions, short",
+    "mood": "curious"
+  },
+  {
+    "handle": "lore_dump",
+    "archetype": "lore-keeper",
+    "style": "remembers past streams and inside jokes, references old fails",
+    "mood": "knowing"
+  }
+]

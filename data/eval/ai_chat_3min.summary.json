@@ -1,0 +1,198 @@
+{
+  "session_id": "ca4531ae286de31f",
+  "media_id": "big_buck_bunny_180s.mp4",
+  "duration_s": 180.0,
+  "viewer_count": 1284,
+  "messages": 393,
+  "message_rate": 2.183,
+  "scenes": 42,
+  "catching_up_events": 1,
+  "dynamics": {
+    "enabled": true,
+    "status": "end",
+    "session_id": "ca4531ae286de31f",
+    "buffer_level": 18,
+    "target_buffer": 20,
+    "low_buffer": 12,
+    "critical_buffer": 5,
+    "rate": 2.704,
+    "intensity": 1.178,
+    "excitation": 2.015,
+    "cooling_down": false,
+    "active_chatters": 39,
+    "released": 393,
+    "generated": 359,
+    "templates": 85,
+    "copies": 50,
+    "dropped": 0,
+    "late_released": 0,
+    "last_error": "",
+    "scene_t": 176.475,
+    "next_refill_in_s": 0.0
+  },
+  "perception": {
+    "status": "end",
+    "session_id": "ca4531ae286de31f",
+    "samples": 42,
+    "errors": 0,
+    "last_error": "",
+    "last_latency_s": 1.1486,
+    "last_t": 176.475,
+    "next_sample_in_s": 0.0,
+    "duty_cap": 0.35,
+    "deferred_for_chat": 423
+  },
+  "bins_5s": [
+    {
+      "start_s": 0,
+      "count": 6
+    },
+    {
+      "start_s": 5,
+      "count": 2
+    },
+    {
+      "start_s": 10,
+      "count": 16
+    },
+    {
+      "start_s": 15,
+      "count": 15
+    },
+    {
+      "start_s": 20,
+      "count": 21
+    },
+    {
+      "start_s": 25,
+      "count": 5
+    },
+    {
+      "start_s": 30,
+      "count": 8
+    },
+    {
+      "start_s": 35,
+      "count": 14
+    },
+    {
+      "start_s": 40,
+      "count": 13
+    },
+    {
+      "start_s": 45,
+      "count": 16
+    },
+    {
+      "start_s": 50,
+      "count": 15
+    },
+    {
+      "start_s": 55,
+      "count": 7
+    },
+    {
+      "start_s": 60,
+      "count": 9
+    },
+    {
+      "start_s": 65,
+      "count": 7
+    },
+    {
+      "start_s": 70,
+      "count": 9
+    },
+    {
+      "start_s": 75,
+      "count": 11
+    },
+    {
+      "start_s": 80,
+      "count": 12
+    },
+    {
+      "start_s": 85,
+      "count": 4
+    },
+    {
+      "start_s": 90,
+      "count": 10
+    },
+    {
+      "start_s": 95,
+      "count": 14
+    },
+    {
+      "start_s": 100,
+      "count": 7
+    },
+    {
+      "start_s": 105,
+      "count": 8
+    },
+    {
+      "start_s": 110,
+      "count": 11
+    },
+    {
+      "start_s": 115,
+      "count": 8
+    },
+    {
+      "start_s": 120,
+      "count": 15
+    },
+    {
+      "start_s": 125,
+      "count": 11
+    },
+    {
+      "start_s": 130,
+      "count": 13
+    },
+    {
+      "start_s": 135,
+      "count": 11
+    },
+    {
+      "start_s": 140,
+      "count": 16
+    },
+    {
+      "start_s": 145,
+      "count": 12
+    },
+    {
+      "start_s": 150,
+      "count": 14
+    },
+    {
+      "start_s": 155,
+      "count": 4
+    },
+    {
+      "start_s": 160,
+      "count": 10
+    },
+    {
+      "start_s": 165,
+      "count": 12
+    },
+    {
+      "start_s": 170,
+      "count": 13
+    },
+    {
+      "start_s": 175,
+      "count": 14
+    }
+  ],
+  "sources": {
+    "template": 80,
+    "crowd": 176,
+    "model": 87,
+    "copypasta": 50
+  },
+  "handles": 82
+}

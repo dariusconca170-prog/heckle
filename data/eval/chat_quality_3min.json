@@ -1,0 +1,452 @@
+{
+  "ai": {
+    "text": {
+      "messages": 342,
+      "words_mean": 3.16,
+      "words_median": 3.0,
+      "words_p90": 6,
+      "words_max": 10,
+      "pct_1_4_words": 78.1,
+      "pct_le_12_words": 100.0,
+      "pct_emote_only": 7500,
+      "pct_contains_emote": 19900,
+      "pct_no_trailing_punct": 98.0,
+      "pct_lowercase_start": 69.0
+    },
+    "model_text": {
+      "messages": 79,
+      "words_mean": 4.42,
+      "words_median": 4,
+      "words_p90": 7,
+      "words_max": 10,
+      "pct_1_4_words": 51.9,
+      "pct_le_12_words": 100.0,
+      "pct_emote_only": 1100,
+      "pct_contains_emote": 4900,
+      "pct_no_trailing_punct": 94.9,
+      "pct_lowercase_start": 74.7
+    },
+    "guard": {
+      "guard_reasons": {
+        "ok": 342
+      },
+      "guard_bad": {}
+    },
+    "model_guard": {
+      "guard_reasons": {
+        "ok": 79
+      },
+      "guard_bad": {}
+    },
+    "repeats_all": {
+      "messages_checked": 342,
+      "repeats_within_50": 92,
+      "repeat_pct": 26.9,
+      "examples": [
+        "why",
+        "proud of you",
+        "W",
+        "trash Sadge LUL",
+        "LETS GO Copium catJAM"
+      ]
+    },
+    "repeats_model": {
+      "messages_checked": 79,
+      "repeats_within_50": 26,
+      "repeat_pct": 32.91,
+      "examples": [
+        "why push there",
+        "W LETS GO Pog Pog Pog Pog Pog",
+        "remember the root-lore WeirdChamp WeirdChamp WeirdChamp",
+        "LETS GO W",
+        "KEKW"
+      ]
+    },
+    "rate": {
+      "bins_5s": [
+        {
+          "start_s": 0,
+          "count": 5
+        },
+        {
+          "start_s": 5,
+          "count": 3
+        },
+        {
+          "start_s": 10,
+          "count": 8
+        },
+        {
+          "start_s": 15,
+          "count": 11
+        },
+        {
+          "start_s": 20,
+          "count": 13
+        },
+        {
+          "start_s": 25,
+          "count": 4
+        },
+        {
+          "start_s": 30,
+          "count": 10
+        },
+        {
+          "start_s": 35,
+          "count": 13
+        },
+        {
+          "start_s": 40,
+          "count": 10
+        },
+        {
+          "start_s": 45,
+          "count": 13
+        },
+        {
+          "start_s": 50,
+          "count": 6
+        },
+        {
+          "start_s": 55,
+          "count": 7
+        },
+        {
+          "start_s": 60,
+          "count": 12
+        },
+        {
+          "start_s": 65,
+          "count": 15
+        },
+        {
+          "start_s": 70,
+          "count": 13
+        },
+        {
+          "start_s": 75,
+          "count": 13
+        },
+        {
+          "start_s": 80,
+          "count": 11
+        },
+        {
+          "start_s": 85,
+          "count": 8
+        },
+        {
+          "start_s": 90,
+          "count": 15
+        },
+        {
+          "start_s": 95,
+          "count": 8
+        },
+        {
+          "start_s": 100,
+          "count": 9
+        },
+        {
+          "start_s": 105,
+          "count": 8
+        },
+        {
+          "start_s": 110,
+          "count": 10
+        },
+        {
+          "start_s": 115,
+          "count": 7
+        },
+        {
+          "start_s": 120,
+          "count": 7
+        },
+        {
+          "start_s": 125,
+          "count": 15
+        },
+        {
+          "start_s": 130,
+          "count": 12
+        },
+        {
+          "start_s": 135,
+          "count": 7
+        },
+        {
+          "start_s": 140,
+          "count": 8
+        },
+        {
+          "start_s": 145,
+          "count": 5
+        },
+        {
+          "start_s": 150,
+          "count": 8
+        },
+        {
+          "start_s": 155,
+          "count": 12
+        },
+        {
+          "start_s": 160,
+          "count": 8
+        },
+        {
+          "start_s": 165,
+          "count": 14
+        },
+        {
+          "start_s": 170,
+          "count": 8
+        },
+        {
+          "start_s": 175,
+          "count": 6
+        },
+        {
+          "start_s": 180,
+          "count": 0
+        }
+      ],
+      "max_gap_s": 3.4,
+      "gaps_over_10s": 0,
+      "bursts": 26,
+      "max_bin": 15
+    },
+    "sources": {
+      "template": 70,
+      "crowd": 193,
+      "model": 79
+    },
+    "handles": 79,
+    "message_rate_per_s": 1.904
+  },
+  "reference": {
+    "text": {
+      "messages": 240,
+      "words_mean": 3.15,
+      "words_median": 2.0,
+      "words_p90": 8,
+      "words_max": 16,
+      "pct_1_4_words": 78.3,
+      "pct_le_12_words": 98.8,
+      "pct_emote_only": 300,
+      "pct_contains_emote": 700,
+      "pct_no_trailing_punct": 96.7,
+      "pct_lowercase_start": 78.3
+    },
+    "guard": {
+      "guard_reasons": {
+        "ok": 236,
+        "too_long": 3,
+        "refusal": 1
+      },
+      "guard_bad": {
+        "too_long": 3,
+        "refusal": 1
+      }
+    }
+  },
+  "capture": {
+    "session_id": "2cac1edc968ab08e",
+    "media_id": "big_buck_bunny_180s.mp4",
+    "duration_s": 180.0,
+    "viewer_count": 1284,
+    "messages": 342,
+    "message_rate": 1.9,
+    "scenes": 41,
+    "catching_up_events": 1,
+    "dynamics": {
+      "enabled": true,
+      "status": "end",
+      "session_id": "2cac1edc968ab08e",
+      "buffer_level": 19,
+      "target_buffer": 20,
+      "low_buffer": 12,
+      "critical_buffer": 5,
+      "rate": 2.391,
+      "intensity": 1.687,
+      "excitation": 1.404,
+      "cooling_down": false,
+      "active_chatters": 39,
+      "released": 342,
+      "generated": 359,
+      "templates": 72,
+      "copies": 0,
+      "dropped": 0,
+      "late_released": 0,
+      "last_error": "",
+      "scene_t": 176.31,
+      "next_refill_in_s": 0.0
+    },
+    "perception": {
+      "status": "end",
+      "session_id": "2cac1edc968ab08e",
+      "samples": 41,
+      "errors": 0,
+      "last_error": "",
+      "last_latency_s": 2.2469,
+      "last_t": 176.31,
+      "next_sample_in_s": 0.0,
+      "duty_cap": 0.35,
+      "deferred_for_chat": 393
+    },
+    "bins_5s": [
+      {
+        "start_s": 0,
+        "count": 5
+      },
+      {
+        "start_s": 5,
+        "count": 3
+      },
+      {
+        "start_s": 10,
+        "count": 8
+      },
+      {
+        "start_s": 15,
+        "count": 11
+      },
+      {
+        "start_s": 20,
+        "count": 13
+      },
+      {
+        "start_s": 25,
+        "count": 4
+      },
+      {
+        "start_s": 30,
+        "count": 10
+      },
+      {
+        "start_s": 35,
+        "count": 13
+      },
+      {
+        "start_s": 40,
+        "count": 10
+      },
+      {
+        "start_s": 45,
+        "count": 13
+      },
+      {
+        "start_s": 50,
+        "count": 6
+      },
+      {
+        "start_s": 55,
+        "count": 7
+      },
+      {
+        "start_s": 60,
+        "count": 12
+      },
+      {
+        "start_s": 65,
+        "count": 15
+      },
+      {
+        "start_s": 70,
+        "count": 13
+      },
+      {
+        "start_s": 75,
+        "count": 13
+      },
+      {
+        "start_s": 80,
+        "count": 11
+      },
+      {
+        "start_s": 85,
+        "count": 8
+      },
+      {
+        "start_s": 90,
+        "count": 15
+      },
+      {
+        "start_s": 95,
+        "count": 8
+      },
+      {
+        "start_s": 100,
+        "count": 9
+      },
+      {
+        "start_s": 105,
+        "count": 8
+      },
+      {
+        "start_s": 110,
+        "count": 10
+      },
+      {
+        "start_s": 115,
+        "count": 7
+      },
+      {
+        "start_s": 120,
+        "count": 7
+      },
+      {
+        "start_s": 125,
+        "count": 15
+      },
+      {
+        "start_s": 130,
+        "count": 12
+      },
+      {
+        "start_s": 135,
+        "count": 7
+      },
+      {
+        "start_s": 140,
+        "count": 8
+      },
+      {
+        "start_s": 145,
+        "count": 5
+      },
+      {
+        "start_s": 150,
+        "count": 8
+      },
+      {
+        "start_s": 155,
+        "count": 12
+      },
+      {
+        "start_s": 160,
+        "count": 8
+      },
+      {
+        "start_s": 165,
+        "count": 14
+      },
+      {
+        "start_s": 170,
+        "count": 8
+      },
+      {
+        "start_s": 175,
+        "count": 6
+      }
+    ],
+    "sources": {
+      "template": 70,
+      "crowd": 193,
+      "model": 79
+    },
+    "handles": 79
+  }
+}

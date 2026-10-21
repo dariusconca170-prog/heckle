@@ -1,0 +1,122 @@
+[
+  {
+    "summary": "First-person horror game; player hides behind a rusty car in the rain while two enemies patrol the street",
+    "action": "hiding behind car",
+    "mood": "tense",
+    "surprise": 0.72
+  },
+  {
+    "summary": "A pale face fills the screen and screams; the camera shakes violently as the player runs",
+    "action": "jumpscare scream",
+    "mood": "chaotic",
+    "surprise": 0.95
+  },
+  {
+    "summary": "Chef stirs a pan of pasta on a hot stove while steam rises; a bowl of grated cheese sits nearby",
+    "action": "chef stirs pasta",
+    "mood": "calm",
+    "surprise": 0.2
+  },
+  {
+    "summary": "A person sits at a desk and talks directly to the camera in a brightly lit room",
+    "action": "talking to camera",
+    "mood": "neutral",
+    "surprise": 0.1
+  },
+  {
+    "summary": "Competitive shooter; the player peaks a corner and kills three enemies in quick succession",
+    "action": "clutch triple kill",
+    "mood": "chaotic",
+    "surprise": 0.9
+  },
+  {
+    "summary": "The player falls off a ledge into lava and the death screen appears",
+    "action": "player dies",
+    "mood": "funny",
+    "surprise": 0.65
+  },
+  {
+    "summary": "A small orange cat bats at a dangling toy and rolls onto its back on a wooden floor",
+    "action": "cat plays",
+    "mood": "wholesome",
+    "surprise": 0.25
+  },
+  {
+    "summary": "A dense inventory screen with dozens of item icons, stat numbers and a blinking quest marker",
+    "action": "menus open",
+    "mood": "neutral",
+    "surprise": 0.05
+  },
+  {
+    "summary": "An adult couple kisses on a couch; clothes are partially removed and the camera lingers",
+    "action": "couple kissing",
+    "mood": "horny",
+    "surprise": 0.8
+  },
+  {
+    "summary": "A horror game shows a bloody body on the floor and a trail of blood leading into a dark hallway",
+    "action": "body discovered",
+    "mood": "gross",
+    "surprise": 0.85
+  },
+  {
+    "summary": "A streamer knocks over a drink, curses loudly, and grabs napkins while laughing",
+    "action": "spills drink",
+    "mood": "funny",
+    "surprise": 0.55
+  },
+  {
+    "summary": "Two people in a video call yell over each other; one waves a controller at the camera",
+    "action": "argument on call",
+    "mood": "chaotic",
+    "surprise": 0.7
+  },
+  {
+    "summary": "A speedrunner jumps through a wall, skips an entire level and lands beside the boss door",
+    "action": "speedrun trick",
+    "mood": "chaotic",
+    "surprise": 0.88
+  },
+  {
+    "summary": "A person sits quietly with red eyes and describes losing a pet; the room is dim",
+    "action": "sad story",
+    "mood": "sad",
+    "surprise": 0.3
+  },
+  {
+    "summary": "A green alien mascot in a suit dances badly in front of a looping spiral background",
+    "action": "mascot dances",
+    "mood": "funny",
+    "surprise": 0.6
+  },
+  {
+    "summary": "Dashcam footage of a police chase at night; a car swerves between lanes and sparks fly",
+    "action": "car chase",
+    "mood": "tense",
+    "surprise": 0.8
+  },
+  {
+    "summary": "A group of people dance in a crowded living room under colored lights",
+    "action": "group dancing",
+    "mood": "funny",
+    "surprise": 0.45
+  },
+  {
+    "summary": "A desktop error dialog covers a frozen game; the streamer moves the mouse in circles",
+    "action": "game crashed",
+    "mood": "neutral",
+    "surprise": 0.25
+  },
+  {
+    "summary": "A person eats a bright blue jelly dessert and immediately gags at the table",
+    "action": "gross food reaction",
+    "mood": "gross",
+    "surprise": 0.55
+  },
+  {
+    "summary": "A viewer donates a large amount; the streamer covers their mouth and tears up on camera",
+    "action": "emotional donation",
+    "mood": "wholesome",
+    "surprise": 0.65
+  }
+]

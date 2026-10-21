@@ -1,0 +1,45 @@
+# Default configuration. Every value can be overridden with TWITCHSIM_* env vars
+# (see backend/config.py) or a local .env file.
+
+app_name = "Twitch Simulator"
+host = "127.0.0.1"
+port = 8000
+
+# Where the media picker looks for playable files.
+media_dir = "data/media"
+
+# File playback reads ahead of the playhead. M0.5 replaces this from the
+# measured model latency; 5.5 s is the 9B starting point from PLAN.md §7.7.
+lookahead_s = 5.5
+
+# A browser timeupdate more than this far from the projected clock is a seek.
+seek_threshold_s = 1.25
+
+# Persistence (M4). History + structured persona memory live in SQLite.
+persistence_enabled = true
+db_path = "data/twitchsim.db"
+memory_enabled = true
+
+# M5 threads / channel identity. The handle is used for @mentions.
+channel_name = "streamer"
+
+# M6 stream furniture. Polls pause with the playhead.
+polls_enabled = true
+
+# M7 clips. Export needs ffmpeg on PATH.
+clips_enabled = true
+clips_dir = "data/clips"
+clip_z_threshold = 3.0
+
+# M8 microphone. Off by default; server capture needs the 'mic' extra.
+mic_enabled = false
+
+# M9 screen capture. Off by default; start it from the settings screen.
+screen_capture_enabled = false
+screen_hotkey = "f9"
+
+# llama.cpp sidecar. The app only uses this once M0.5 has named a winner.
+llama_server = "llama-server"
+llama_host = "127.0.0.1"
+llama_port = 8080
+model_profile = "data/model_profile.json"

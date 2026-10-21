@@ -1,0 +1,20 @@
+name = "9b"
+model_id = "HauhauCS/Qwen3.5-9B-Uncensored-HauhauCS-Aggressive"
+model = "data/models/Qwen3.5-9B-Uncensored-HauhauCS-Aggressive-Q4_K_M.gguf"
+mmproj = "data/models/mmproj-Qwen3.5-9B-Uncensored-HauhauCS-Aggressive-BF16.gguf"
+alias = "twitch-sim-9b"
+
+ctx = 4096
+n_gpu_layers = 99
+threads = 8
+batch = 2048
+ubatch = 2048
+cache_type_k = "q8_0"
+cache_type_v = "q8_0"
+flash_attn = true
+jinja = true
+disable_thinking = true
+
+host = "127.0.0.1"
+port = 8080
+lookahead_s = 5.5
